@@ -1,5 +1,4 @@
-import java.util.*;
-import java.util.stream.IntStream;
+import java.math.BigInteger;
 
 /**
  * A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
@@ -20,21 +19,24 @@ import java.util.stream.IntStream;
  *
  * @author Julian Vasa
  */
-public class UniquePaths {
-    public static void main(String[] args) {
-        uniquePaths(3 ,7);
+public class Solution {
+   
+     public static BigInteger factorial(BigInteger number) {
+        BigInteger result = BigInteger.valueOf(1);
+
+        for (long factor = 2; factor <= number.longValue(); factor++) {
+            result = result.multiply(BigInteger.valueOf(factor));
+        }
+
+        return result;
     }
+
     public static int uniquePaths(int m, int n) {
-        int paths = 0;
-        int total = IntStream.rangeClosed(1, (m+n-2))
-                .reduce(1, (int x, int y) -> x * y);
-        int repM = IntStream.rangeClosed(1, m-1)
-                .reduce(1, (int x, int y) -> x * y);
-        int repN = IntStream.rangeClosed(1, n-1)
-                .reduce(1, (int x, int y) -> x * y);
-        paths = total / (repM * repN);
-        return paths;
+        BigInteger total = factorial(BigInteger.valueOf(m+n-2));
+        BigInteger repM = factorial(BigInteger.valueOf(m-1));
+        BigInteger repN = factorial(BigInteger.valueOf(n-1));
+        if(repM.multiply(repN).equals(0)) return 0;
+        BigInteger paths = total.divide(repM.multiply(repN));
+        return paths.intValue();
     }
-
-
 }
